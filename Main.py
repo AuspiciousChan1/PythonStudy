@@ -4,7 +4,6 @@ import os
 import pymongo
 import pymongo as pymongo
 from pymongo import MongoClient
-from Adb.UnlockPhone import UnlockPhone
 from matplotlib import image, pyplot
 import numpy
 
