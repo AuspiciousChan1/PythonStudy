@@ -18,9 +18,9 @@ import numpy
 # os.system("adb shell input swipe 500 500 500 500 %d" % t)
 
 # Matplotlib
-from ImageProcessing import Image
-
-ima = Image.Image('Sources/Left.png')
-# pyplot.imshow(ima)
-ima.show()
-print(type(ima))
+# from ImageProcessing import Image
+#
+# ima = Image.Image('Sources/Left.png')
+# # pyplot.imshow(ima)
+# ima.show()
+# print(type(ima))

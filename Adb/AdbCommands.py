@@ -1,11 +1,19 @@
 import os
 
+from ImageProcessing import Image
+
 
 class AdbCommands:
     __command_header = ""
+    __screen_length: int
+    __screen_width: int
 
     def __init__(self, device_id: str):
         self.__command_header = "adb -s %s" % device_id
+        self.screen_shot()
+        img = Image.Image(self.__to_phone_addr())
+        self.__screen_length = img.length()
+        self.__screen_width = img.width()
 
     # 执行adb命令
     @staticmethod
@@ -14,9 +22,9 @@ class AdbCommands:
 
     # 将SD卡下的目录补充为完整目录
     @staticmethod
-    def __to_phone_addr(addr: str)->str:
+    def __to_phone_addr(addr="")->str:
         if addr is None or len(addr) == 0:
-            return "/sdcard"
+            return "/sdcard/file_name"
         else:
             addr.replace('\\', '/')
             pre = "/sdcard" if addr[0] == '/' else "/sdcard/"
@@ -33,14 +41,14 @@ class AdbCommands:
         self.__execute(cmd=cmd)
 
     # 输入文字
-    def input(self, text: str):
+    def input(self, text=""):
         if text is None:
             text = ""
         cmd = "%s shell input text %s" % (self.__command_header, text)
         self.__execute(cmd=cmd)
 
     # 截图并保存到SD卡的store_address目录下（/sdcard/%s) % store_address
-    def screen_shot(self, store_address: str):
+    def screen_shot(self, store_address=""):
         store_address = self.__to_phone_addr(store_address)
         cmd = "%s shell /system/bin/screencap -p %s" % (self.__command_header, store_address)
         self.__execute(cmd=cmd)
@@ -52,13 +60,19 @@ class AdbCommands:
         self.__execute(cmd=cmd)
 
     # 删除安卓设备上的文件
-    def remove_file(self, address: str):
+    def remove_file(self, address=""):
         address = self.__to_phone_addr(address)
         if address is None or len(address) < 1:
             cmd = ""
         else:
             cmd = "%s shell rm %s" % (self.__command_header, address)
         self.__execute(cmd)
+
+    def screen_length(self)-> int:
+        return self.__screen_length
+
+    def screen_width(self)-> int:
+        return self.__screen_width
 
 # 组合函数
     # 截屏，上传到电脑，然后删除安卓端的截图
@@ -68,3 +82,5 @@ class AdbCommands:
         while not os.path.exists(store_address):
             pass
         self.remove_file("ScrShot.png")
+
+

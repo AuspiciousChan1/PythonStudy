@@ -20,24 +20,17 @@ class MySQLHandler:
 
     def insert_into(self, inf: dict, table: str):
         key_str = output.sprint(inf.keys(), ", ")
-        value_str = output.sprint(inf.values(), ", ")
+        value_str = output.sprint(inf.values(), ", ", True)
 
         cmd = """INSERT INTO %s
                 (%s)
                 VALUES (%s)
               """ % (table, key_str, value_str)
-
+        print(cmd)
         try:
             self.__cursor.execute(cmd)
             self.__db.commit()
         except:
+            print("error: insert fair")
             self.__db.rollback()
 
-
-d = {}
-for i in range(1000):
-    s = "i%d" % i
-    d[s] = i
-
-print(d.keys())
-print(d.values())

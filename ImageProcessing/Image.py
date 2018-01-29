@@ -10,6 +10,7 @@ class Image:
     __image: numpy.ndarray
     __length: int
     __width: int
+
     def __init__(self, path: str):
         self.__image = numpy.array(image.imread(path))
         self.__length = len(self.__image[:, 0, 0])
