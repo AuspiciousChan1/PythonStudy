@@ -7,6 +7,7 @@ from utils import vector
 
 class Image:
     # __image用矩阵保存图片， 根据图片特点不同，每个像素点用[R, G, B, A]或[R, G, B]储存
+    # 右下角像素点的坐标为（__length-1, width-1）
     __image: numpy.ndarray
     __length: int
     __width: int
@@ -16,8 +17,10 @@ class Image:
         self.__length = len(self.__image[:, 0, 0])
         self.__width = len(self.__image[0, :, 0])
 
+    def __out_of_range(self, x: int, y: int)-> bool:
+        return x >= self.__length or x < 0 or y >= self.__width or y < 0
+
     def show(self):
-        self.__image[1000:1250, 400:500, 0] = 0
         numpy.where(self.__image[:, :, 0] < 1, numpy.zeros((self.__length, self.__width)), self.__image[:, :, 0])
         pyplot.imshow(self.__image)
         pyplot.show()
@@ -31,6 +34,17 @@ class Image:
     def width(self)->int:
         return self.__width
 
+    def rgba_array(self)-> numpy.ndarray:
+        if len(self.__image[0, 0, :]) >= 4:
+            return self.__image
+        else:
+            rgb = self.__image
+            alpha = numpy.ones([self.length(), self.width(), 1])
+            return numpy.concatenate((rgb, alpha), axis=2)
+
+    def rgb_array(self)-> numpy:
+        return self.__image[:, :, 0:3]
+
     def red_array(self)-> numpy.ndarray:
         return self.__image[:, :, 0]
 
@@ -43,10 +57,29 @@ class Image:
     def alpha_array(self)-> numpy.ndarray:
         return self.__image[:, :, 3] if self.has_alpha() else numpy.array([])
 
+    # 颜色的角相似度
     def color_angle_similarity(self, x0: int, y0: int, x1: int, y1: int)-> float:
-        if numpy.maximum(x0, x1) >= self.__length or numpy.minimum(x0, x1) < 0 or numpy.maximum(y0, y1) >= self.__length or numpy.minimum(y0, y1) < 0:
+        if self.__out_of_range(x0, y0) or self.__out_of_range(x1, y1):
             print("out of range")
-            return 0
+            return -1
         v0 = self.__image[x0, y0, 0: 3]
         v1 = self.__image[x1, y1, 0: 3]
         return vector.cosine(v0, v1)
+
+    # 红绿蓝占比
+    def rgb_proportion(self, x: int, y: int)->tuple:
+        if self.__out_of_range(x, y):
+            print("out of range")
+            return -1
+        return vector.normalize(self.__image[x, y, 0: 3])
+
+    def red_proportion(self, x: int, y: int)->float:
+        return self.rgb_proportion(x, y)[0]
+
+    def green_proportion(self, x: int, y: int)->float:
+        return self.rgb_proportion(x, y)[1]
+
+    def blue_proportion(self, x: int, y: int)->float:
+        return self.rgb_proportion(x, y)[2]
+
+

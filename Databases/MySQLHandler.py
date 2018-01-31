@@ -1,3 +1,4 @@
+import numpy
 import pymysql
 
 from utils import output
@@ -33,4 +34,3 @@ class MySQLHandler:
         except:
             print("error: insert fair")
             self.__db.rollback()
-
