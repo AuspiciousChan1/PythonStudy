@@ -5,7 +5,6 @@ import pymongo
 from pymongo import MongoClient
 from matplotlib import image, pyplot
 import numpy
-import scipy
 from sklearn import cluster, externals
 
 from ImageProcessing import Image
