@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="nba@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.1">
+    <root id="1"/>
+    <schema id="2" parent="1" name="nba">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="information_schema"/>
+    <schema id="4" parent="1" name="mysql"/>
+    <schema id="5" parent="1" name="mysql_study"/>
+    <schema id="6" parent="1" name="performance_schema"/>
+    <schema id="7" parent="1" name="sys"/>
+    <schema id="8" parent="1" name="compilation_principle_study"/>
+    <table id="9" parent="2" name="city_list"/>
+    <table id="10" parent="2" name="division_list"/>
+    <table id="11" parent="2" name="partition_list"/>
+    <table id="12" parent="2" name="player_list"/>
+    <table id="13" parent="2" name="team_list"/>
+    <column id="14" parent="9" name="city_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="15" parent="9" name="name">
+      <Position>2</Position>
+      <DataType>varchar(40)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="16" parent="9" name="division_id">
+      <Position>3</Position>
+      <DataType>int(3)|0</DataType>
+    </column>
+    <index id="17" parent="9" name="division_list_division_id_fk">
+      <ColNames>division_id</ColNames>
+    </index>
+    <key id="18" parent="9" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>city_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="19" parent="9" name="division_list_division_id_fk">
+      <ColNames>division_id</ColNames>
+      <RefSchemaName>nba</RefSchemaName>
+      <RefTableName>division_list</RefTableName>
+      <RefColNames>division_id</RefColNames>
+    </foreign-key>
+    <column id="20" parent="10" name="division_id">
+      <Position>1</Position>
+      <DataType>int(3)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="21" parent="10" name="division">
+      <Position>2</Position>
+      <DataType>varchar(10)|0</DataType>
+    </column>
+    <column id="22" parent="10" name="partition_id">
+      <Position>3</Position>
+      <DataType>int(2)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="23" parent="10" name="partition_list_partition_id_fk">
+      <ColNames>partition_id</ColNames>
+    </index>
+    <key id="24" parent="10" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>division_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="25" parent="10" name="partition_list_partition_id_fk">
+      <ColNames>partition_id</ColNames>
+      <RefSchemaName>nba</RefSchemaName>
+      <RefTableName>partition_list</RefTableName>
+      <RefColNames>partition_id</RefColNames>
+    </foreign-key>
+    <column id="26" parent="11" name="partition_id">
+      <Position>1</Position>
+      <DataType>int(2)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="27" parent="11" name="partitions">
+      <Position>2</Position>
+      <DataType>varchar(4)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="28" parent="11" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>partition_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="29" parent="12" name="player_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="30" parent="12" name="first_name">
+      <Position>2</Position>
+      <DataType>varchar(30)|0</DataType>
+    </column>
+    <column id="31" parent="12" name="last_name">
+      <Position>3</Position>
+      <DataType>varchar(30)|0</DataType>
+    </column>
+    <column id="32" parent="12" name="team_id">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="33" parent="12" name="number">
+      <Position>5</Position>
+      <DataType>int(7)|0</DataType>
+    </column>
+    <column id="34" parent="12" name="position">
+      <Position>6</Position>
+      <DataType>varchar(3)|0</DataType>
+    </column>
+    <column id="35" parent="12" name="height">
+      <Position>7</Position>
+      <DataType>int(9)|0</DataType>
+    </column>
+    <column id="36" parent="12" name="birthday">
+      <Position>8</Position>
+      <DataType>date|0</DataType>
+    </column>
+    <index id="37" parent="12" name="team_list_team_id_fk">
+      <ColNames>team_id</ColNames>
+    </index>
+    <key id="38" parent="12" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>player_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="39" parent="12" name="team_list_team_id_fk">
+      <ColNames>team_id</ColNames>
+      <RefSchemaName>nba</RefSchemaName>
+      <RefTableName>team_list</RefTableName>
+      <RefColNames>team_id</RefColNames>
+    </foreign-key>
+    <column id="40" parent="13" name="team_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="41" parent="13" name="name">
+      <Position>2</Position>
+      <DataType>varchar(30)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="42" parent="13" name="chinese_name">
+      <Position>3</Position>
+      <DataType>varchar(5)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="43" parent="13" name="city_id">
+      <Position>4</Position>
+      <DataType>int(6)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="44" parent="13" name="chinese_name">
+      <ColNames>chinese_name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="45" parent="13" name="name">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="46" parent="13" name="city_list_city_id_fk">
+      <ColNames>city_id</ColNames>
+    </index>
+    <key id="47" parent="13" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>team_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="48" parent="13" name="name">
+      <ColNames>name</ColNames>
+      <UnderlyingIndexName>name</UnderlyingIndexName>
+    </key>
+    <key id="49" parent="13" name="chinese_name">
+      <ColNames>chinese_name</ColNames>
+      <UnderlyingIndexName>chinese_name</UnderlyingIndexName>
+    </key>
+    <foreign-key id="50" parent="13" name="city_list_city_id_fk">
+      <ColNames>city_id</ColNames>
+      <RefSchemaName>nba</RefSchemaName>
+      <RefTableName>city_list</RefTableName>
+      <RefColNames>city_id</RefColNames>
+    </foreign-key>
+  </database-model>
+</dataSource>

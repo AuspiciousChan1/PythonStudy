@@ -2,7 +2,7 @@ import numpy
 import scipy
 from collections import Iterable
 from sklearn import cluster, externals
-from ImageProcessing import Image
+from ImageProcessing import MyImage
 
 
 class MyCluster:

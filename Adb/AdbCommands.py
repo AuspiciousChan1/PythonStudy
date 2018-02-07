@@ -1,6 +1,6 @@
 import os
 
-from ImageProcessing import Image
+from ImageProcessing import MyImage
 
 
 class AdbCommands:
@@ -11,7 +11,7 @@ class AdbCommands:
     def __init__(self, device_id: str):
         self.__command_header = "adb -s %s" % device_id
         self.screen_shot()
-        img = Image.Image(self.__to_phone_addr())
+        img = MyImage.Image(self.__to_phone_addr())
         self.__screen_length = img.length()
         self.__screen_width = img.width()
 

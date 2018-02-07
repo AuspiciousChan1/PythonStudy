@@ -5,7 +5,7 @@ import os
 from utils import vector
 
 
-class Image:
+class MyImage():
     # __image用矩阵保存图片， 根据图片特点不同，每个像素点用[R, G, B, A]或[R, G, B]储存
     # 右下角像素点的坐标为（__length-1, width-1）
     __image: numpy.ndarray
