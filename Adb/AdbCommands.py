@@ -1,6 +1,9 @@
 import os
 
-from ImageProcessing import MyImage
+import time
+
+# from ImageProcessing import MyImage
+from PIL import Image
 
 
 class AdbCommands:
@@ -9,11 +12,13 @@ class AdbCommands:
     __screen_width: int
 
     def __init__(self, device_id: str):
+        addr = "../Sources/ss.png"
         self.__command_header = "adb -s %s" % device_id
-        self.screen_shot()
-        img = MyImage.Image(self.__to_phone_addr())
-        self.__screen_length = img.length()
-        self.__screen_width = img.width()
+        self.shot_pull_rm(addr)
+        img: Image.Image = Image.open(addr)
+        self.__screen_width, self.__screen_length = img.size
+        # if os.path.exists(addr):
+        #     os.remove(addr)
 
     # 执行adb命令
     @staticmethod

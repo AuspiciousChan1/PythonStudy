@@ -18,21 +18,21 @@ def output_ndarray_to_file(arr: numpy.ndarray):
 
 
 # Image转换类型为ndarray
-def to_ndarry(img_gray: Image.Image)->numpy.ndarray:
+def to_ndarry(img_gray: Image.Image) -> numpy.ndarray:
     return numpy.array(img_gray)
 
 
 # ndarray转换类型为Image
-def from_ndarray(img_arr: numpy.ndarray)->Image.Image:
+def from_ndarray(img_arr: numpy.ndarray) -> Image.Image:
     return Image.fromarray(img_arr)
 
 
 # 返回灰度图
-def grayscale(img: Image.Image)-> Image.Image:
+def grayscale(img: Image.Image) -> Image.Image:
     return img.convert("L")
 
 
-def is_gray_img(img: Image.Image)->bool:
+def is_gray_img(img: Image.Image) -> bool:
     if img is None:
         print("Not gray image: None")
         return False
@@ -49,19 +49,18 @@ def is_gray_img(img: Image.Image)->bool:
 
 
 # 保留y方向上中间的图片
-def remain_center_height(img: Image.Image)-> Image.Image:
+def remain_center_height(img: Image.Image) -> Image.Image:
     w, l = img.size
-    return img.crop((0, l/4, w, l*3/4))
+    return img.crop((0, l / 4, w, l * 3 / 4))
 
 
-def horizontal_border(img_gray: Image.Image)-> Image.Image:
+def horizontal_border(img_gray: Image.Image) -> Image.Image:
     if is_gray_img(img_gray):
         img_arr = to_ndarry(img_gray)
         w, l = img_arr.shape
-        print(w, l)
         for i in range(w - 1):
-            img_arr[i, :] -= img_arr[i+1, :]
-        img_arr[w-1, :] = numpy.zeros((1, l), dtype=int)
+            img_arr[i, :] -= img_arr[i + 1, :]
+        img_arr[w - 1, :] = numpy.zeros((1, l), dtype=int)
         img_arr = numpy.abs(img_arr)
         return from_ndarray(img_arr)
     else:
@@ -74,7 +73,7 @@ def show_ndarray_as_image(img_arr: numpy.ndarray):
 
 
 # 在灰度图上绘制正方形的标记
-def mark_square(img_gray: Image.Image, x: int, y: int, light=255)->Image.Image:
+def mark_square(img_gray: Image.Image, x: int, y: int, light=255) -> Image.Image:
     if is_gray_img(img_gray):
         img_arr = numpy.array(img_gray)
         w, l = img_arr.shape
@@ -90,8 +89,27 @@ def mark_square(img_gray: Image.Image, x: int, y: int, light=255)->Image.Image:
         return img_gray
 
 
+# 获取起点位置
+def get_begin(img_gray: Image.Image, is_left: bool) -> tuple:
+    screen_divide = 7/15
+
+    img_gray = horizontal_border(img_gray)
+    img_arr = numpy.array(img_gray)
+    l, w = img_arr.shape
+    # print("width: %d" % w)
+    img_arr = img_arr[:, 0: int(w * screen_divide)] if is_left else img_arr[:, int(w * (1 - screen_divide)): w]
+    xs, ys = numpy.where(img_arr == 255)
+    top_index = numpy.where(xs == numpy.min(xs))
+    x_top = int(numpy.average(xs[top_index])) + int(200/960*img_arr.shape[0])
+    y_top = int(numpy.average(ys[top_index]))
+
+    y_top = y_top if is_left else y_top + int(w * (1 - screen_divide))
+
+    return x_top, y_top
+
+
 # 获取下一个块的顶点坐标
-def get_top(img_gray: Image.Image)->tuple:
+def get_top(img_gray: Image.Image) -> tuple:
     img_gray = horizontal_border(img_gray)
     img_arr = numpy.array(img_gray)
     xs, ys = numpy.where(img_arr > 64)
@@ -103,24 +121,21 @@ def get_top(img_gray: Image.Image)->tuple:
 
 
 # 获取下一个块的中点坐标
-def get_center(img_gray: Image.Image)->tuple:
+def get_center(img_gray: Image.Image) -> tuple:
     img_gray = horizontal_border(img_gray)
     img_arr = numpy.array(img_gray)
-    xs, ys = numpy.where(img_arr > 64)
+    xs, ys = numpy.where(img_arr > 8)
     top_indexes = numpy.where(xs == xs.min())
     x_top = int(numpy.average(xs[top_indexes]))
     y_top = int(numpy.average(ys[top_indexes]))
     x_bottom = 0
     y_bottom = y_top
     # vertical_center_line是x从x_top到图片底部，y=y_top，所以算出的x_bottom要加上(x_top+5)才是才是真正的x_bottom
-    vertical_center_line = img_arr[x_top+5:img_arr.shape[0], y_bottom]
-    light_points_indexes = numpy.where(vertical_center_line > 64)
-    x_bottom = light_points_indexes[0][0] + x_top + 5
+    vertical_center_line = img_arr[x_top + 50:img_arr.shape[0], y_bottom]
+    light_points_indexes = numpy.where(vertical_center_line > 16)
+    x_bottom = light_points_indexes[0][0] + x_top + 50
 
     x_target = int((x_top + x_bottom) / 2)
     y_target = int((y_top + y_bottom) / 2)
 
     return x_target, y_target
-
-
-
