@@ -81,9 +81,10 @@ def mark_square(img_gray: Image.Image, x: int, y: int, light=255) -> Image.Image
         x_max = x + 5 if x < w - 5 else w - 1
         y_min = y - 5 if y >= 5 else 0
         y_max = y + 5 if y < l - 5 else l - 1
-        for i in range(x_min, x_max + 1):
-            for j in range(y_min, y_max + 1):
-                img_arr[i, j] = light
+        img_arr[x_min:x_max+1, y_min: y_max+1] = light
+        # for i in range(x_min, x_max + 1):
+        #     for j in range(y_min, y_max + 1):
+        #         img_arr[i, j] = light
         return Image.fromarray(img_arr)
     else:
         return img_gray
@@ -116,7 +117,6 @@ def get_top(img_gray: Image.Image) -> tuple:
     top_index = numpy.where(xs == xs.min())
     x_top = int(numpy.average(xs[top_index]))
     y_top = int(numpy.average(ys[top_index]))
-
     return x_top, y_top
 
 
@@ -139,3 +139,35 @@ def get_center(img_gray: Image.Image) -> tuple:
     y_target = int((y_top + y_bottom) / 2)
 
     return x_target, y_target
+
+
+def is_high_light_region(img_gray: Image.Image, x: int, y: int)->bool:
+    if is_gray_img(img_gray):
+        img_arr = numpy.array(img_gray)
+        l, w = img_arr.shape
+        half_reg = 10
+        x_min = x - half_reg if x >= half_reg else 0
+        x_max = x + half_reg if x < l - half_reg else l - 1
+        y_min = y - half_reg if y >= half_reg else 0
+        y_max = y + half_reg if y < w - half_reg else w - 1
+        avg = numpy.average(img_arr[x_min:x_max + 1, y_min: y_max + 1])
+        return avg > 128
+
+    else:
+        print("Error: Not gray image")
+        return False
+
+
+def is_top_head(img_gray: Image.Image, x_top: int, y_top: int)->bool:
+    if is_gray_img(img_gray):
+        img_arr = numpy.array(img_gray)
+        l, w = img_arr.shape
+        if x_top > l - 200:
+            print("x_top is too big")
+            return False
+        avg = numpy.average(img_arr[x_top:x_top + 6, y_top])
+        # print("avg: %f" % avg)
+        return avg <= 60
+    else:
+        print("Error: Not gray image")
+        return False
