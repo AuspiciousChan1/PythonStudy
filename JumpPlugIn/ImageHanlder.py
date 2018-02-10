@@ -99,7 +99,7 @@ def get_begin(img_gray: Image.Image, is_left: bool) -> tuple:
     l, w = img_arr.shape
     # print("width: %d" % w)
     img_arr = img_arr[:, 0: int(w * screen_divide)] if is_left else img_arr[:, int(w * (1 - screen_divide)): w]
-    xs, ys = numpy.where(img_arr == 255)
+    xs, ys = numpy.where(img_arr >= 255)
     top_index = numpy.where(xs == numpy.min(xs))
     x_top = int(numpy.average(xs[top_index])) + int(200/960*img_arr.shape[0])
     y_top = int(numpy.average(ys[top_index]))
@@ -132,7 +132,7 @@ def get_center(img_gray: Image.Image) -> tuple:
     y_bottom = y_top
     # vertical_center_line是x从x_top到图片底部，y=y_top，所以算出的x_bottom要加上(x_top+5)才是才是真正的x_bottom
     vertical_center_line = img_arr[x_top + 50:img_arr.shape[0], y_bottom]
-    light_points_indexes = numpy.where(vertical_center_line > 16)
+    light_points_indexes = numpy.where(vertical_center_line > 8)
     x_bottom = light_points_indexes[0][0] + x_top + 50
 
     x_target = int((x_top + x_bottom) / 2)

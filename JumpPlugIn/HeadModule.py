@@ -22,14 +22,14 @@ class HeadTop:
             return False
         else:
             if is_left:
-                if self.__distance(data, True) < 800 or self.count_left < 3:
+                if self.__distance(data, True) < 700 or self.count_left < 1:
                     self.average_region_left = (self.average_region_left * self.count_left + data) / (self.count_left + 1)
                     self.count_left += 1
                     return True
                 else:
                     return False
             else:
-                if self.__distance(data, False) < 800 or self.count_right < 3:
+                if self.__distance(data, False) < 700 or self.count_right < 1:
                     self.average_region_right = (self.average_region_right * self.count_right + data) / (self.count_right + 1)
                     self.count_right += 1
                     return True
